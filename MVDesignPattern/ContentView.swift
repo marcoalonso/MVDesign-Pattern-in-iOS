@@ -53,7 +53,24 @@ struct ContentView: View {
         
         VStack {
             List (storeModel.products) { product in
-                Text(product.title)
+                HStack {
+                    AsyncImage(url: URL(string: product.image)) { image in
+                        image.resizable()
+                            .frame(maxWidth: 50, maxHeight: 50)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    VStack {
+                        Text(product.title)
+                            .font(.title3)
+                            .foregroundColor(.blue)
+                        Spacer()
+                        Text("$ \(product.price)")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                    }
+                }
             }
         }.task {
             await populateProducts()
